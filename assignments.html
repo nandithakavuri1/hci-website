@@ -10,7 +10,9 @@
     <header>
       <nav>
         <a href="index.html"><button class="button">Home</button></a>
-        <a href="assignments.html"><button class="button">Assignments</button></a>
+        <a href="assignments.html"
+          ><button class="button">Assignments</button></a
+        >
       </nav>
     </header>
 
@@ -22,54 +24,35 @@
         <li>
           User & Problem Space Research Paper
           <br />
-          <input type="file" id="assignment2-file" accept="application/pdf" onchange="uploadFile(event, 'assignment2')" />
-          <div id="assignment2"></div>
+          <input type="file" name="assignment2-file" id="assignment2-file" />
+        </li>
+
+        <li>
+          Quiz - 1
+          <br />
+          Score:
+          <input type="text" name="quiz1-score" id="quiz1-score" />
+        </li>
+
+        <li>
+          Quiz - 2
+          <br />
+          Score:
+          <input type="text" name="quiz1-score" id="quiz2-score" />
         </li>
 
         <li>
           Team Project Phase 1: Concepting & Modeling
           <br />
-          <input type="file" id="assignment5-file" accept="application/pdf" onchange="uploadFile(event, 'assignment5')" />
-          <div id="assignment5"></div>
+          <input type="file" name="assignment5-file" id="assignment5-file" />
+        </li>
+
+        <li>
+          Grad Student Project (Independent Study or Team Project Phase 2)
+          <br />
+          <input type="file" name="assignment6-file" id="assignment6-file" />
         </li>
       </ol>
     </main>
-
-    <script>
-      const savedFiles = JSON.parse(localStorage.getItem('uploadedFiles')) || {};
-
-      function displayFiles() {
-        for (const id in savedFiles) {
-          const container = document.getElementById(id);
-          const file = savedFiles[id];
-          const link = document.createElement('a');
-          link.href = file.url;
-          link.textContent = file.name;
-          link.target = '_blank';
-          container.innerHTML = '';
-          container.appendChild(link);
-        }
-      }
-
-      function uploadFile(event, targetId) {
-        const file = event.target.files[0];
-        if (file && file.type === 'application/pdf') {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            const blob = new Blob([e.target.result], { type: file.type });
-            const url = URL.createObjectURL(blob);
-            savedFiles[targetId] = { name: file.name, url: url };
-            localStorage.setItem('uploadedFiles', JSON.stringify(savedFiles));
-            displayFiles();
-            setTimeout(() => alert('PDF file uploaded successfully and saved to the website.'), 100);
-          };
-          reader.readAsArrayBuffer(file);
-        } else {
-          alert('Please upload a valid PDF file.');
-        }
-      }
-
-      window.onload = displayFiles;
-    </script>
   </body>
 </html>
