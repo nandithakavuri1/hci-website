@@ -27,44 +27,36 @@
         </li>
 
         <li>
-          Quiz - 1
-          <br />
-          Score:
-          <input type="text" name="quiz1-score" id="quiz1-score" />
-        </li>
-
-        <li>
-          Quiz - 2
-          <br />
-          Score:
-          <input type="text" name="quiz2-score" id="quiz2-score" />
-        </li>
-
-        <li>
           Team Project Phase 1: Concepting & Modeling
           <br />
           <input type="file" name="assignment5-file" id="assignment5-file" onchange="displayFile('assignment5-file', 'file-display-2')" />
           <p id="file-display-2"></p>
         </li>
-
-        <li>
-          Grad Student Project (Independent Study or Team Project Phase 2)
-          <br />
-          <input type="file" name="assignment6-file" id="assignment6-file" onchange="displayFile('assignment6-file', 'file-display-3')" />
-          <p id="file-display-3"></p>
-        </li>
       </ol>
+
+      <h2>Uploaded Files:</h2>
+      <div id="uploaded-files"></div>
     </main>
 
     <script>
+      let uploadedFiles = [];
+
       function displayFile(inputId, displayId) {
         const input = document.getElementById(inputId);
         const display = document.getElementById(displayId);
         if (input.files.length > 0) {
-          display.textContent = `Selected file: ${input.files[0].name}`;
+          const fileName = input.files[0].name;
+          display.textContent = `Selected file: ${fileName}`;
+          uploadedFiles.push(fileName);
+          updateUploadedFiles();
         } else {
           display.textContent = '';
         }
+      }
+
+      function updateUploadedFiles() {
+        const container = document.getElementById('uploaded-files');
+        container.innerHTML = uploadedFiles.map(file => `<p>${file}</p>`).join('');
       }
     </script>
   </body>
