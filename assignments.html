@@ -10,9 +10,7 @@
     <header>
       <nav>
         <a href="index.html"><button class="button">Home</button></a>
-        <a href="assignments.html"
-          ><button class="button">Assignments</button></a
-        >
+        <a href="assignments.html"><button class="button">Assignments</button></a>
       </nav>
     </header>
 
@@ -24,7 +22,8 @@
         <li>
           User & Problem Space Research Paper
           <br />
-          <input type="file" name="assignment2-file" id="assignment2-file" />
+          <input type="file" name="assignment2-file" id="assignment2-file" onchange="displayFile('assignment2-file', 'file-display-1')" />
+          <p id="file-display-1"></p>
         </li>
 
         <li>
@@ -38,21 +37,35 @@
           Quiz - 2
           <br />
           Score:
-          <input type="text" name="quiz1-score" id="quiz2-score" />
+          <input type="text" name="quiz2-score" id="quiz2-score" />
         </li>
 
         <li>
           Team Project Phase 1: Concepting & Modeling
           <br />
-          <input type="file" name="assignment5-file" id="assignment5-file" />
+          <input type="file" name="assignment5-file" id="assignment5-file" onchange="displayFile('assignment5-file', 'file-display-2')" />
+          <p id="file-display-2"></p>
         </li>
 
         <li>
           Grad Student Project (Independent Study or Team Project Phase 2)
           <br />
-          <input type="file" name="assignment6-file" id="assignment6-file" />
+          <input type="file" name="assignment6-file" id="assignment6-file" onchange="displayFile('assignment6-file', 'file-display-3')" />
+          <p id="file-display-3"></p>
         </li>
       </ol>
     </main>
+
+    <script>
+      function displayFile(inputId, displayId) {
+        const input = document.getElementById(inputId);
+        const display = document.getElementById(displayId);
+        if (input.files.length > 0) {
+          display.textContent = `Selected file: ${input.files[0].name}`;
+        } else {
+          display.textContent = '';
+        }
+      }
+    </script>
   </body>
 </html>
