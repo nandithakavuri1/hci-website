@@ -36,25 +36,36 @@
     </main>
 
     <script>
+      const savedFiles = JSON.parse(localStorage.getItem('uploadedFiles')) || {};
+
+      function displayFiles() {
+        for (const id in savedFiles) {
+          const container = document.getElementById(id);
+          const link = document.createElement('a');
+          link.href = savedFiles[id].url;
+          link.textContent = savedFiles[id].name;
+          link.target = '_blank';
+          container.innerHTML = '';
+          container.appendChild(link);
+        }
+      }
+
       function uploadFile(event, targetId) {
         const file = event.target.files[0];
         if (file) {
           const reader = new FileReader();
           reader.onload = function(e) {
-            const content = e.target.result;
-            const container = document.getElementById(targetId);
-            const link = document.createElement('a');
-            const blob = new Blob([content], { type: file.type });
+            const blob = new Blob([e.target.result], { type: file.type });
             const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.textContent = file.name;
-            link.target = '_blank';
-            container.innerHTML = '';
-            container.appendChild(link);
+            savedFiles[targetId] = { name: file.name, url: url };
+            localStorage.setItem('uploadedFiles', JSON.stringify(savedFiles));
+            displayFiles();
           };
           reader.readAsArrayBuffer(file);
         }
       }
+
+      window.onload = displayFiles;
     </script>
   </body>
 </html>
