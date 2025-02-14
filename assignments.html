@@ -22,32 +22,37 @@
         <li>
           User & Problem Space Research Paper
           <br />
-          <input type="file" id="assignment2-file" onchange="handleFileUpload(event)" />
+          <input type="file" id="assignment2-file" onchange="uploadFile(event, 'assignment2')" />
+          <div id="assignment2"></div>
         </li>
 
         <li>
           Team Project Phase 1: Concepting & Modeling
           <br />
-          <input type="file" id="assignment5-file" onchange="handleFileUpload(event)" />
+          <input type="file" id="assignment5-file" onchange="uploadFile(event, 'assignment5')" />
+          <div id="assignment5"></div>
         </li>
       </ol>
-
-      <h2>Uploaded Files:</h2>
-      <div id="uploaded-files"></div>
     </main>
 
     <script>
-      function handleFileUpload(event) {
+      function uploadFile(event, targetId) {
         const file = event.target.files[0];
         if (file) {
-          const fileURL = URL.createObjectURL(file);
-          const uploadedFilesDiv = document.getElementById('uploaded-files');
-          const link = document.createElement('a');
-          link.href = fileURL;
-          link.textContent = file.name;
-          link.target = '_blank';
-          link.style.display = 'block';
-          uploadedFilesDiv.appendChild(link);
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const content = e.target.result;
+            const container = document.getElementById(targetId);
+            const link = document.createElement('a');
+            const blob = new Blob([content], { type: file.type });
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.textContent = file.name;
+            link.target = '_blank';
+            container.innerHTML = '';
+            container.appendChild(link);
+          };
+          reader.readAsArrayBuffer(file);
         }
       }
     </script>
