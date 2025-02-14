@@ -24,7 +24,8 @@
         <li>
           User & Problem Space Research Paper
           <br />
-          <input type="file" name="assignment2-file" id="assignment2-file" />
+          <input type="file" name="assignment2-file" id="assignment2-file" accept="application/pdf" onchange="uploadFile(event, 'assignment2')" />
+          <div id="assignment2"></div>
         </li>
 
         <li>
@@ -44,15 +45,54 @@
         <li>
           Team Project Phase 1: Concepting & Modeling
           <br />
-          <input type="file" name="assignment5-file" id="assignment5-file" />
+          <input type="file" name="assignment5-file" id="assignment5-file" accept="application/pdf" onchange="uploadFile(event, 'assignment5')" />
+          <div id="assignment5"></div>
         </li>
 
         <li>
           Grad Student Project (Independent Study or Team Project Phase 2)
           <br />
-          <input type="file" name="assignment6-file" id="assignment6-file" />
+          <input type="file" name="assignment6-file" id="assignment6-file" accept="application/pdf" onchange="uploadFile(event, 'assignment6')" />
+          <div id="assignment6"></div>
         </li>
       </ol>
     </main>
+
+    <script>
+      const savedFiles = JSON.parse(localStorage.getItem('uploadedFiles')) || {};
+
+      function displayFiles() {
+        for (const id in savedFiles) {
+          const container = document.getElementById(id);
+          const file = savedFiles[id];
+          const link = document.createElement('a');
+          link.href = file.url;
+          link.textContent = file.name;
+          link.target = '_blank';
+          container.innerHTML = '';
+          container.appendChild(link);
+        }
+      }
+
+      function uploadFile(event, targetId) {
+        const file = event.target.files[0];
+        if (file && file.type === 'application/pdf') {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const blob = new Blob([e.target.result], { type: file.type });
+            const url = URL.createObjectURL(blob);
+            savedFiles[targetId] = { name: file.name, url: url };
+            localStorage.setItem('uploadedFiles', JSON.stringify(savedFiles));
+            displayFiles();
+            setTimeout(() => alert('PDF file uploaded successfully and saved to the website.'), 100);
+          };
+          reader.readAsArrayBuffer(file);
+        } else {
+          alert('Please upload a valid PDF file.');
+        }
+      }
+
+      window.onload = displayFiles;
+    </script>
   </body>
 </html>
