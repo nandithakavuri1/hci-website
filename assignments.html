@@ -22,15 +22,13 @@
         <li>
           User & Problem Space Research Paper
           <br />
-          <input type="file" name="assignment2-file" id="assignment2-file" onchange="displayFile('assignment2-file', 'file-display-1')" />
-          <p id="file-display-1"></p>
+          <input type="file" id="assignment2-file" onchange="handleFileUpload(event)" />
         </li>
 
         <li>
           Team Project Phase 1: Concepting & Modeling
           <br />
-          <input type="file" name="assignment5-file" id="assignment5-file" onchange="displayFile('assignment5-file', 'file-display-2')" />
-          <p id="file-display-2"></p>
+          <input type="file" id="assignment5-file" onchange="handleFileUpload(event)" />
         </li>
       </ol>
 
@@ -39,24 +37,18 @@
     </main>
 
     <script>
-      let uploadedFiles = [];
-
-      function displayFile(inputId, displayId) {
-        const input = document.getElementById(inputId);
-        const display = document.getElementById(displayId);
-        if (input.files.length > 0) {
-          const fileName = input.files[0].name;
-          display.textContent = `Selected file: ${fileName}`;
-          uploadedFiles.push(fileName);
-          updateUploadedFiles();
-        } else {
-          display.textContent = '';
+      function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const fileURL = URL.createObjectURL(file);
+          const uploadedFilesDiv = document.getElementById('uploaded-files');
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.textContent = file.name;
+          link.target = '_blank';
+          link.style.display = 'block';
+          uploadedFilesDiv.appendChild(link);
         }
-      }
-
-      function updateUploadedFiles() {
-        const container = document.getElementById('uploaded-files');
-        container.innerHTML = uploadedFiles.map(file => `<p>${file}</p>`).join('');
       }
     </script>
   </body>
