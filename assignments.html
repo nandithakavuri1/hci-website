@@ -22,14 +22,14 @@
         <li>
           User & Problem Space Research Paper
           <br />
-          <input type="file" id="assignment2-file" onchange="uploadFile(event, 'assignment2')" />
+          <input type="file" id="assignment2-file" accept="application/pdf" onchange="uploadFile(event, 'assignment2')" />
           <div id="assignment2"></div>
         </li>
 
         <li>
           Team Project Phase 1: Concepting & Modeling
           <br />
-          <input type="file" id="assignment5-file" onchange="uploadFile(event, 'assignment5')" />
+          <input type="file" id="assignment5-file" accept="application/pdf" onchange="uploadFile(event, 'assignment5')" />
           <div id="assignment5"></div>
         </li>
       </ol>
@@ -41,9 +41,10 @@
       function displayFiles() {
         for (const id in savedFiles) {
           const container = document.getElementById(id);
+          const file = savedFiles[id];
           const link = document.createElement('a');
-          link.href = savedFiles[id].url;
-          link.textContent = savedFiles[id].name;
+          link.href = file.url;
+          link.textContent = file.name;
           link.target = '_blank';
           container.innerHTML = '';
           container.appendChild(link);
@@ -52,7 +53,7 @@
 
       function uploadFile(event, targetId) {
         const file = event.target.files[0];
-        if (file) {
+        if (file && file.type === 'application/pdf') {
           const reader = new FileReader();
           reader.onload = function(e) {
             const blob = new Blob([e.target.result], { type: file.type });
@@ -60,9 +61,11 @@
             savedFiles[targetId] = { name: file.name, url: url };
             localStorage.setItem('uploadedFiles', JSON.stringify(savedFiles));
             displayFiles();
-            alert('File uploaded successfully and saved to the website.');
+            setTimeout(() => alert('PDF file uploaded successfully and saved to the website.'), 100);
           };
           reader.readAsArrayBuffer(file);
+        } else {
+          alert('Please upload a valid PDF file.');
         }
       }
 
